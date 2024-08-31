@@ -3,12 +3,10 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\ContentResource\Pages;
-use App\Filament\Resources\ContentResource\RelationManagers;
 use App\Models\Content;
 use Filament\Forms\Components\Card;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Grid;
-use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -65,12 +63,6 @@ class ContentResource extends Resource
                 Grid::make(1)
                     ->schema([
                         Card::make([
-//                            RichEditor::make('content')
-//                                ->label('Content')
-//                                ->fileAttachmentsDisk('local')
-//                                ->fileAttachmentsDirectory('public/uploads/images')
-//                                ->fileAttachmentsVisibility('public')
-//                                ->required(),
                         TiptapEditor::make('content')
                             ->label('Content')
                             ->disk('local')

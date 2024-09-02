@@ -6,8 +6,10 @@ use App\Filament\Resources\ContentResource\Pages;
 use App\Models\Content;
 use Filament\Forms\Components\Card;
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -38,14 +40,35 @@ class ContentResource extends Resource
                                     ->label('Type')
                                     ->options([
                                         'post' => 'Post',
-                                        'page' => 'Page',
+                                        'essay' => 'Essay',
+                                        'project' => 'Project',
                                     ])
+                                    ->required(),
+                                Textarea::make('description')
+                                    ->label('Description')
+                                    ->required(),
+                            ]),
+                            Card::make([
+                                TiptapEditor::make('content')
+                                    ->label('Content')
+                                    ->disk('public')
+                                    ->directory('uploads/images')
+                                    ->output(TiptapOutput::Html)
                                     ->required(),
                             ]),
                         ])->columnSpan(2),
 
                     Grid::make(1)
                         ->schema([
+                            Card::make([
+                                FileUpload::make('cover_image')
+                                    ->label('Cover Image')
+                                    ->image()
+                                    ->disk('public')
+                                    ->directory('uploads/images')
+                                    ->visibility('public')
+                                    ->required(),
+                            ]),
                             Card::make([
                                 Select::make('status')
                                     ->label('Status')
@@ -54,23 +77,12 @@ class ContentResource extends Resource
                                         'published' => 'Published',
                                     ])
                                     ->required(),
-                                DatePicker::make('created_at')
-                                    ->label('Created At')
+                                DatePicker::make('published_at')
+                                    ->label('Published At')
                                     ->required(),
                             ]),
                         ])->columnSpan(1),
                 ]),
-                Grid::make(1)
-                    ->schema([
-                        Card::make([
-                        TiptapEditor::make('content')
-                            ->label('Content')
-                            ->disk('local')
-                            ->directory('public/uploads/images')
-                            ->output(TiptapOutput::Html)
-                            ->required(),
-                        ]),
-                    ]),
             ]);
     }
 
@@ -90,6 +102,10 @@ class ContentResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('user.name')
                     ->label('Author')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('published_at')
+                    ->label('Published')
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')

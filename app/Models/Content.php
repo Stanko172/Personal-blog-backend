@@ -9,24 +9,25 @@ use Illuminate\Support\Str;
 class Content extends Model
 {
     protected $fillable = [
+        'content',
+        'cover_image',
+        'description',
+        'published_at',
         'title',
         'slug',
-        'type',
         'status',
-        'content',
+        'type',
         'table_of_contents',
     ];
 
-    protected $casts = [
-        'table_of_contents' => 'array',
-    ];
+    public const PAGINATION_COUNT = 10;
 
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    public static function boot()
+    public static function boot(): void
     {
         parent::boot();
 

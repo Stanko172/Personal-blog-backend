@@ -12,9 +12,11 @@ return new class extends Migration {
             $table->string('title');
             $table->string('slug')->unique();
             $table->string('type');
+            $table->string('description');
             $table->string('status');
             $table->longText('content');
-            $table->json('table_of_contents')->nullable();
+            $table->string('cover_image');
+            $table->date('published_at');
 
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
 

@@ -23,14 +23,21 @@ class ContentResource extends JsonResource
             'id' => $this->id,
             'type' => Str::ucfirst($this->type),
             'title' => $this->title,
+            'slug' => $this->slug,
             'description' => $this->description,
             'content' => $this->truncateContent
                 ? Str::limit(strip_tags($this->content), 115)
-                : $this->content,
+                : $this->replaceRelativePathsWithAbsolute($this->content),
             'cover_image' => url($this->cover_image),
+            'url' => Str::plural($this->type) . '/' . $this->slug,
             'published_at' => Carbon::parse($this->published_at)->format('F j, Y'),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];
+    }
+
+    private function replaceRelativePathsWithAbsolute(string $content): string
+    {
+        return Str::replace('src="/', 'src="' . config('app.url') . '/', $content);
     }
 }

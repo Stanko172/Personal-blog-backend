@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\ContentCollection;
+use App\Http\Resources\ContentResource;
 use App\Models\Content;
-use App\Models\User;
 use Illuminate\Http\Request;
 
 class ContentController extends Controller
@@ -30,8 +30,12 @@ class ContentController extends Controller
         return ContentCollection::make($contents);
     }
 
-    public function show(string $id)
+    public function show(string $slug): ContentResource
     {
-        //
+        $content = Content::query()
+            ->where('slug', $slug)
+            ->firstOrFail();
+
+        return ContentResource::make($content);
     }
 }

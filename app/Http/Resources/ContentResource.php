@@ -28,6 +28,7 @@ class ContentResource extends JsonResource
             'content' => $this->truncateContent
                 ? Str::limit(strip_tags($this->content), 115)
                 : $this->replaceRelativePathsWithAbsolute($this->content),
+            'table_of_contents' => $this->table_of_contents,
             'cover_image' => url($this->cover_image),
             'url' => Str::plural($this->type) . '/' . $this->slug,
             'published_at' => Carbon::parse($this->published_at)->format('F j, Y'),

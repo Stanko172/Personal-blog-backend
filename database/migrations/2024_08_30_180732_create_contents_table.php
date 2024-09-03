@@ -15,6 +15,7 @@ return new class extends Migration {
             $table->string('description');
             $table->string('status');
             $table->longText('content');
+            $table->text('table_of_contents')->nullable();
             $table->string('cover_image');
             $table->date('published_at');
 

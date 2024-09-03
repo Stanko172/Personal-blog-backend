@@ -32,8 +32,33 @@ class Content extends Model
         parent::boot();
 
         static::creating(function ($content) {
+            $content->content = self::appendSlugIdsToHeadings($content->content);
             $content->slug = Str::slug($content->title);
             $content->user_id = auth()->id();
+            $content->table_of_contents = tiptap_converter()->asTOC($content->content);
+        });
+
+        static::updating(function ($content) {
+            $content->content = self::appendSlugIdsToHeadings($content->content);
+            $content->slug = Str::slug($content->title);
+            $content->table_of_contents = tiptap_converter()->asTOC($content->content);
         });
     }
+
+    public static function appendSlugIdsToHeadings(string $content): string
+    {
+        $pattern = '/<h([1-6])(?:\s+id="([^"]*)")?>(.*?)<\/h\1>/';
+
+        $replacement = function ($matches) {
+            $tag = $matches[1];
+            $headingText = $matches[3];
+
+            $newId = Str::slug($headingText);
+
+            return "<h{$tag} id=\"{$newId}\">{$headingText}</h{$tag}>";
+        };
+
+        return preg_replace_callback($pattern, $replacement, $content);
+    }
+
 }

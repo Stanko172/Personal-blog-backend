@@ -14,6 +14,7 @@ class ContentController extends Controller
         $type = $request->get('type');
 
         $contentsQuery = Content::query()
+            ->where('status', 'published')
             ->orderBy('created_at', 'desc');
 
         if (!isset($type)) {

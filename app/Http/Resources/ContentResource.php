@@ -5,6 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class ContentResource extends JsonResource
@@ -29,7 +30,7 @@ class ContentResource extends JsonResource
                 ? Str::limit(strip_tags($this->content), 115)
                 : $this->replaceRelativePathsWithAbsolute($this->content),
             'table_of_contents' => $this->table_of_contents,
-            'cover_image' => url($this->cover_image),
+            'cover_image' => sprintf("%s/%s", config('app.url'), Storage::url($this->cover_image)),
             'url' => sprintf("%s/%s/%s", config('app.url'), Str::plural($this->type), $this->slug),
             'published_at' => Carbon::parse($this->published_at)->format('F j, Y'),
             'created_at' => $this->created_at,

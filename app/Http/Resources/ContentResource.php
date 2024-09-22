@@ -31,7 +31,7 @@ class ContentResource extends JsonResource
                 : $this->replaceRelativePathsWithAbsolute($this->content),
             'table_of_contents' => $this->table_of_contents,
             'cover_image' => sprintf("%s/%s", config('app.url'), Storage::url($this->cover_image)),
-            'url' => sprintf("%s/%s/%s", config('app.url'), Str::plural($this->type), $this->slug),
+            'url' => sprintf("%s/%s/%s", config('app.frontend.url'), Str::plural($this->type), $this->slug),
             'published_at' => Carbon::parse($this->published_at)->format('F j, Y'),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,

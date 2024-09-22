@@ -35,13 +35,13 @@ class Content extends Model
             $content->content = self::appendSlugIdsToHeadings($content->content);
             $content->slug = Str::slug($content->title);
             $content->user_id = auth()->id();
-            $content->table_of_contents = tiptap_converter()->asTOC($content->content);
+            $content->table_of_contents = rescue(tiptap_converter()->asTOC($content->content));
         });
 
         static::updating(function ($content) {
             $content->content = self::appendSlugIdsToHeadings($content->content);
             $content->slug = Str::slug($content->title);
-            $content->table_of_contents = tiptap_converter()->asTOC($content->content);
+            $content->table_of_contents = rescue(tiptap_converter()->asTOC($content->content));
         });
     }
 

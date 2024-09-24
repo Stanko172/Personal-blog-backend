@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ca31d275ab39a5433cf67536ae1e4be7",
+    "content-hash": "a3ab496380595e3142b9516e83b53eb6",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -74,16 +74,16 @@
         },
         {
             "name": "awcodes/filament-tiptap-editor",
-            "version": "v3.4.13",
+            "version": "v3.4.16",
             "source": {
                 "type": "git",
                 "url": "https://github.com/awcodes/filament-tiptap-editor.git",
-                "reference": "411ee658176054cfeecd202faaab8660fa28ee0d"
+                "reference": "fef63d8e04776299470892735a329568c1743f54"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/awcodes/filament-tiptap-editor/zipball/411ee658176054cfeecd202faaab8660fa28ee0d",
-                "reference": "411ee658176054cfeecd202faaab8660fa28ee0d",
+                "url": "https://api.github.com/repos/awcodes/filament-tiptap-editor/zipball/fef63d8e04776299470892735a329568c1743f54",
+                "reference": "fef63d8e04776299470892735a329568c1743f54",
                 "shasum": ""
             },
             "require": {
@@ -92,7 +92,6 @@
                 "ueberdosis/tiptap-php": "^1.1"
             },
             "require-dev": {
-                "awcodes/html-faker": "^0.1.0",
                 "filament/filament": "^3.0",
                 "laravel/pint": "^1.0",
                 "nunomaduro/collision": "^7.0",
@@ -145,7 +144,7 @@
             ],
             "support": {
                 "issues": "https://github.com/awcodes/filament-tiptap-editor/issues",
-                "source": "https://github.com/awcodes/filament-tiptap-editor/tree/v3.4.13"
+                "source": "https://github.com/awcodes/filament-tiptap-editor/tree/v3.4.16"
             },
             "funding": [
                 {
@@ -153,7 +152,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-08-30T17:43:11+00:00"
+            "time": "2024-09-21T17:01:40+00:00"
         },
         {
             "name": "blade-ui-kit/blade-heroicons",

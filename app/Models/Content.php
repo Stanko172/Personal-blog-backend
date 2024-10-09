@@ -20,6 +20,12 @@ class Content extends Model
         'table_of_contents',
     ];
 
+    protected $casts = [
+        'content' => 'array',
+        'published_at' => 'datetime',
+        'table_of_contents' => 'array',
+    ];
+
     public const PAGINATION_COUNT = 10;
 
     public function user(): BelongsTo
@@ -45,20 +51,28 @@ class Content extends Model
         });
     }
 
-    public static function appendSlugIdsToHeadings(string $content): string
+    public static function appendSlugIdsToHeadings(array $content): array
     {
-        $pattern = '/<h([1-6])(?:\s+id="([^"]*)")?>(.*?)<\/h\1>/';
+        $process = function ($node) use (&$process) {
+            if (isset($node['type']) && $node['type'] === 'heading') {
+                $headingText = implode('', array_map(fn($text) => $text['text'], $node['content']));
+                $newId = Str::slug($headingText);
+                $node['attrs']['id'] = $newId;
+            }
 
-        $replacement = function ($matches) {
-            $tag = $matches[1];
-            $headingText = $matches[3];
+            if (isset($node['content'])) {
+                foreach ($node['content'] as &$child) {
+                    $process($child);
+                }
+            }
 
-            $newId = Str::slug($headingText);
-
-            return "<h{$tag} id=\"{$newId}\">{$headingText}</h{$tag}>";
+            return $node;
         };
 
-        return preg_replace_callback($pattern, $replacement, $content);
-    }
+        foreach ($content as &$node) {
+            $process($node);
+        }
 
+        return $content;
+    }
 }

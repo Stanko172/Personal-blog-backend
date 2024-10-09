@@ -27,7 +27,7 @@ class ContentResource extends JsonResource
             'slug' => $this->slug,
             'description' => $this->description,
             'content' => $this->truncateContent
-                ? Str::limit(strip_tags($this->content), 115)
+                ? $this->generateDescription($this->content)
                 : $this->replaceRelativePathsWithAbsolute($this->content),
             'table_of_contents' => $this->table_of_contents,
             'cover_image' => sprintf("%s/%s", config('app.url'), Storage::url($this->cover_image)),
@@ -38,8 +38,20 @@ class ContentResource extends JsonResource
         ];
     }
 
-    private function replaceRelativePathsWithAbsolute(string $content): string
+    private function convertToHtml(array $content): string
     {
+        return tiptap_converter()->asHTML($content);
+    }
+
+    private function replaceRelativePathsWithAbsolute(array $content): string
+    {
+        $content = $this->convertToHtml($content);
         return Str::replace('src="/', 'src="' . config('app.url') . '/', $content);
+    }
+
+    private function generateDescription(array $content): string
+    {
+        $content = $this->convertToHtml($content);
+        return Str::limit(strip_tags($content), 115);
     }
 }

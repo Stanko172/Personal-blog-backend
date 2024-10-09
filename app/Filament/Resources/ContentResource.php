@@ -53,7 +53,7 @@ class ContentResource extends Resource
                                     ->label('Content')
                                     ->disk('public')
                                     ->directory('uploads/images')
-                                    ->output(TiptapOutput::Html)
+                                    ->output(TiptapOutput::Json)
                                     ->required(),
                             ]),
                         ])->columnSpan(2),

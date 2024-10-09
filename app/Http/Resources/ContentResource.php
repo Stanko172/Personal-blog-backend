@@ -28,7 +28,7 @@ class ContentResource extends JsonResource
             'description' => $this->description,
             'content' => $this->truncateContent
                 ? $this->generateDescription($this->content)
-                : $this->replaceRelativePathsWithAbsolute($this->content),
+                : $this->generateFullContent($this->content),
             'table_of_contents' => $this->table_of_contents,
             'cover_image' => sprintf("%s/%s", config('app.url'), Storage::url($this->cover_image)),
             'url' => sprintf("%s/%s/%s", config('app.frontend.url'), Str::plural($this->type), $this->slug),
@@ -47,6 +47,27 @@ class ContentResource extends JsonResource
     {
         $content = $this->convertToHtml($content);
         return Str::replace('src="/', 'src="' . config('app.url') . '/', $content);
+    }
+
+    private function appendSlugIdsToHeadings(string $content): string
+    {
+        $pattern = '/<h([1-6])(?:\s+id="([^"]*)")?>(.*?)<\/h\1>/';
+        $replacement = function ($matches) {
+            $tag = $matches[1];
+            $headingText = $matches[3];
+
+            $newId = Str::slug($headingText);
+
+            return "<h{$tag} id=\"{$newId}\">{$headingText}</h{$tag}>";
+        };
+
+        return preg_replace_callback($pattern, $replacement, $content);
+    }
+
+    private function generateFullContent(array $content): string
+    {
+        $content = $this->replaceRelativePathsWithAbsolute($content);
+        return $this->appendSlugIdsToHeadings($content);
     }
 
     private function generateDescription(array $content): string

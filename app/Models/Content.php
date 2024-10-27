@@ -26,7 +26,7 @@ class Content extends Model
         'table_of_contents' => 'array',
     ];
 
-    public const PAGINATION_COUNT = 10;
+    public const PAGINATION_COUNT = 5;
 
     public function user(): BelongsTo
     {

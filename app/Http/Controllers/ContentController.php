@@ -37,6 +37,8 @@ class ContentController extends Controller
             ->where('slug', $slug)
             ->firstOrFail();
 
+        abort_if($content->status !== 'published', 404);
+
         return ContentResource::make($content);
     }
 }
